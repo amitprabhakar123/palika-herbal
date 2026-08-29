@@ -14,8 +14,9 @@ export const getCart = (userId) => API.get(`/cart/${userId}`);
 
 export const updateCart = (data) => API.put("/cart/update", data);
 
-export const removeFromCart = (data) => API.delete("/cart/remove", {
-  data,
-});
+export const removeFromCart = (data) =>
+  API.delete("/cart/remove", {
+    data,
+  });
 
 export default API;
