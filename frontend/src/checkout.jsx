@@ -50,6 +50,8 @@ function Checkout({
 
     if (
       !address.pincode ||
+      !address.city ||
+      !address.state ||
       !address.flat ||
       !address.area ||
       !address.name ||
@@ -62,15 +64,30 @@ function Checkout({
     setShowAddress(false);
   };
 
+  // ===============================
+  // PLACE ORDER
+  // ===============================
+
   const placeOrder = async () => {
-    if (!address.name || !address.pincode || !address.area) {
+    if (
+      !address.name ||
+      !address.pincode ||
+      !address.area ||
+      !address.city ||
+      !address.flat
+    ) {
       setShowAddress(true);
+      return;
+    }
+
+    if (!userId) {
+      alert("Please login before placing order");
       return;
     }
 
     try {
       const response = await fetch(
-        "https://palika-herbal.onrender.com/api/orders",
+        "https://palika-herbal.onrender.com/api/orders/create",
         {
           method: "POST",
           headers: {
@@ -78,9 +95,11 @@ function Checkout({
           },
           body: JSON.stringify({
             userId,
-            items: cart,
-            totalAmount: grandTotal,
-            shippingAddress: address,
+            customerName: address.name,
+            phone: address.mobile,
+            address: `${address.flat}, ${address.area}`,
+            city: address.city,
+            pincode: address.pincode,
             paymentMethod: payment,
           }),
         }
@@ -99,7 +118,7 @@ function Checkout({
         onOrderSuccess();
       }
     } catch (error) {
-      console.error(error);
+      console.error("Order error:", error);
       alert("Backend server se connection nahi ho raha");
     }
   };
@@ -130,6 +149,7 @@ function Checkout({
         {/* LEFT */}
         <div className="checkout-left">
 
+          {/* DELIVERY DETAILS */}
           <div className="checkout-card">
 
             <h2>Delivery Details</h2>
@@ -270,6 +290,7 @@ function Checkout({
 
             <div className="price-row">
               <span>Shipping</span>
+
               <strong>
                 {shipping === 0
                   ? "FREE"
