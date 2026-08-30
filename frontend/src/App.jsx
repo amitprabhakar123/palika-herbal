@@ -128,8 +128,9 @@ function App() {
 
   const [search, setSearch] = useState("");
 
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   /* AUTH */
 
   const [authPage, setAuthPage] = useState("none");
@@ -507,12 +508,17 @@ function App() {
      SEARCH
   ========================= */
 
-  const filteredProducts =
-    products.filter((product) =>
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
+  const filteredProducts = products.filter((product) => {
+  const matchesSearch = product.name
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchesCategory =
+    selectedCategory === "All" ||
+    product.category === selectedCategory;
+
+  return matchesSearch && matchesCategory;
+});
 
   /* =========================
      AUTH PAGE
@@ -774,44 +780,79 @@ function App() {
 
       <nav className="navbar">
 
-        <a href="#products">
-          Hair Care
-        </a>
+     <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("Hair Care");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+      >
+    Hair Care
+      </button>
 
-        <a href="#products">
-          Skin Care
-        </a>
+     <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("Skin Care");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+        >
+    Skin Care
+       </button>
 
-        <a href="#products">
-          Face Care
-        </a>
+       <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("Face Care");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+  >
+    Face Care
+  </button>
 
-        <a href="#products">
-          Body Care
-        </a>
+  <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("Body Care");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+  >
+    Body Care
+  </button>
 
-        <a href="#products">
-          Bio Organic
-        </a>
+  <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("Bio Organic");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+  >
+    Bio Organic
+  </button>
 
-        <a href="#products">
-          Best Seller
-        </a>
+  <button
+    type="button"
+    onClick={() => {
+      setSelectedCategory("All");
+      document
+        .getElementById("products")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }}
+  >
+    All Products
+  </button>
 
-        <a href="#products">
-          Super Deals
-        </a>
-
-        <a href="#products">
-          Gifts
-        </a>
-
-        <a href="#footer">
-          About Us
-        </a>
-
-      </nav>
-
+ </nav>
       {/* =========================
           HERO
       ========================= */}
@@ -939,6 +980,11 @@ function App() {
           <h2>
             Best Selling Products
           </h2>
+          <p className="selected-category">
+           {selectedCategory === "All"
+             ? "All Products"
+             : `${selectedCategory} Products`}
+             </p>
 
           <span>
             Natural products carefully
