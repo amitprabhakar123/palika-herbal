@@ -70,7 +70,7 @@ function Checkout({
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/orders",
+        "https://palika-herbal.onrender.com/api/orders/create",
         {
           method: "POST",
           headers: {
