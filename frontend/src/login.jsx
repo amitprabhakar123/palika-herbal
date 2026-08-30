@@ -18,7 +18,7 @@ function Login({ onLogin, onSwitch }) {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://palika-herbal.onrender.com/api/auth/login",
         {
           email,
           password,
